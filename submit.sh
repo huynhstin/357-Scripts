@@ -13,6 +13,14 @@ if echo "$STYLECHECK_OUT" | grep 'FAILED'; then
     exit 1
 fi
 
+# Get makefile and requirements if not already there
+/home/jhuynh42/357/Scripts/getasgn.sh
+
+# Ensure requirements fulfilled
+echo "Make sure that your code follows the requirements:"
+cat requirements
+echo
+
 # Run tests and exit if failed
 TEST_OUT="$(/home/jhuynh42/357/Scripts/test.sh)"
 echo -e "$TEST_OUT\n"
