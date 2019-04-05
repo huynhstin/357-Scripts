@@ -8,6 +8,8 @@ HOME="/home/jhuynh42/357/${ASGN::-1}s/$ASGN"
 fail=0
 input=0
 
+# $1: "expect" or "actual"
+# $2: a.out or name of mammen's test
 function run_tests {
     for test in $HOME/tests/*.in ; do
         echo -e "    Running $test..."
@@ -16,17 +18,17 @@ function run_tests {
             echo "-> Note that all test.in's should be located in /tests. "
             $2 > $HOME/tests/no_in.$1
             break
-        else 
-            name=${test::-3}
-            if [[ input -eq 1 ]]; then # is an input file 
-                $2 < $test &> $name.$1
-            else # is command line args
-                # remove old test output
-                rm -f $name.$1
-                while read arg; do
-                    $2 $arg &>> $name.$1
-                done <"$test"
-            fi
+        fi 
+
+        name=${test::-3}
+        if [[ input -eq 1 ]]; then # is an input file 
+            $2 < $test &> $name.$1
+        else # is command line args
+            # remove old test output
+            rm -f $name.$1
+            while IFS="" read -r arg || [ -n "$arg" ]; do
+                $2 $arg &>> $name.$1
+            done <"$test"
         fi
     done
 }
@@ -57,8 +59,8 @@ if [ -d $TEST_DIRECTORY ]; then
         testname="${test##*/}"
         if [[ "${#DIFF_OUT}" -gt 0 ]]; then # diff outputted something
             echo "${testname::-7} failed!"
-            diff -q $test ${test::-7}.expect
-            echo -e "$DIFF_OUT\n"
+            diff -q $test ${test::-7}.expect # show which files differed
+            echo -e "$DIFF_OUT\n" # show actual diff output
             let fail=1
         else
             echo "${testname::-7} passed!"

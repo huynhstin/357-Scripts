@@ -21,6 +21,10 @@ echo "Make sure that your code follows the requirements:"
 cat requirements
 echo
 
+echo "Make sure that your code is within the complexity metrics: "
+/home/jhuynh42/357/Scripts/complexstats.sh
+echo
+
 # Run tests and exit if failed
 TEST_OUT="$(/home/jhuynh42/357/Scripts/test.sh)"
 echo -e "$TEST_OUT\n"
