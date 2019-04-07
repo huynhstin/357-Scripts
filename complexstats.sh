@@ -31,12 +31,9 @@ fi
 avg="$(bc <<<"scale=1; $total / $n")"
 
 # Calculate ratio
-n1=$((n-1))
-top_quart="$(bc <<<"scale=5; $n / $n1")"
-tq1="$(bc <<<"scale=5; $top_quart-1")"
-ratofsm="$(bc <<<"scale=5; $tq1 * $secondmax")"
-ratio="$(bc <<<"scale=5; $max + $ratofsm")"
-ratio="$(bc <<<"scale=5; $ratio / $total")"
+tq="$(bc <<<"scale=5; ($n / 4)-1")"
+ratio_sm="$(bc <<<"scale=5; $tq * $secondmax")"
+ratio="$(bc <<<"scale=3; ($max + $ratio_sm) / $total")"
 
 echo "Total complexity: $total"
 echo "Max complexity: $max"

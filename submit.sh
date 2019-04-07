@@ -2,6 +2,7 @@
 # Submits assignment for 357. 
 # Run ./submit.sh inside a folder with the name of the assignment: ex /Exercise5/
 ASGN=${PWD##*/}
+mkdir -p tests
 
 STYLECHECK_OUT="$(/home/jhuynh42/357/Scripts/stylecheck.sh)"
 echo -e "$STYLECHECK_OUT"

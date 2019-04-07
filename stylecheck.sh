@@ -2,7 +2,6 @@
 # Stylechecks all .c files in the directory
 # Usage: ./stylecheck.sh
 
+# Suppresses error message if no c files in directory
 shopt -s nullglob 
-for file in *.c; do
-    ~kmammen-grader/bin/styleCheckC $file
-done
+~kmammen-grader/bin/styleCheckC *.c
