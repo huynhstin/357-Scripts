@@ -14,7 +14,7 @@ function run_tests {
     for test in $HOME/tests/*.in ; do
         echo -e "    Running $test..."
         if [ ! -f $test ]; then
-            echo "-> No test.in's found. Running reference solution without them... "
+            echo "-> No test.in's found. Running solution without them... "
             echo "-> Note that all test.in's should be located in /tests. "
             $2 > $HOME/tests/no_in.$1
             break
@@ -33,22 +33,11 @@ function run_tests {
     done
 }
 
-if [ ! -d $TEST_DIRECTORY ]; then
-    echo "Reference solution does not exist. Exiting.... "
-    exit 1
-fi 
-
 mkdir -p tests
 
 read -p "Are your test files input (1) or command line arguments (2)? " -n 1 -r
 echo
 let input=$REPLY
-
-echo "-> Running reference solution... "
-for file in $TEST_DIRECTORY/*; do 
-    echo $file
-    run_tests "expect" "$file"
-done
 
 echo -e "\n-> Running your solution... "
 echo "$HOME/a.out"
@@ -56,6 +45,18 @@ make clean
 make
 
 run_tests "actual" "$HOME/a.out"
+echo
+
+if [ ! -d $TEST_DIRECTORY ]; then
+    echo "Reference solution does not exist. Exiting.... "
+    exit 1
+fi 
+
+echo "-> Running reference solution... "
+for file in $TEST_DIRECTORY/*; do 
+    echo $file
+    run_tests "expect" "$file"
+done
 
 echo -e "\n-> Diff'ing outputs... "
 for test in $HOME/tests/*.actual; do
