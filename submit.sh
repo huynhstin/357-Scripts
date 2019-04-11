@@ -9,7 +9,7 @@ echo -e "$STYLECHECK_OUT"
 echo 
 
 # Run stylecheck and exit if failed
-if echo "$STYLECHECK_OUT" | grep 'FAILED'; then
+if [[ $STYLECHECK_OUT == *"FAILED style check"* ]]; then 
     echo "Aborting."
     exit 1
 fi
@@ -29,7 +29,7 @@ echo
 # Run tests and exit if failed
 TEST_OUT="$(/home/jhuynh42/357/Scripts/test.sh)"
 echo -e "$TEST_OUT\n"
-if echo "$TEST_OUT" | grep 'test failed'; then
+if [[ $TEST_OUT == *"test failed"* ]]; then 
     echo "Aborting."
     exit 1
 fi
@@ -45,8 +45,13 @@ echo
 # Prompt for handin
 read -p "Handin? " -n 1 -r
 echo 
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    handin kmammen-grader $ASGN-Section9 $ASGN.zip
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if [[ $ASGN == "Exercise"* ]]; then 
+        handin kmammen-grader $ASGN-Section9 $ASGN.zip 
+        handin kmammen-grader $ASGN-Section9
+    else
+        handin kmammen-grader $ASGN $ASGN.zip 
+        handin kmammen-grader $ASGN
+    fi
 fi
 echo "Done."

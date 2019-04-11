@@ -16,7 +16,7 @@ while read -r line; do
         if [ $1 -gt $max ]; then 
             secondmax=$max
             max=$1
-        elif [ $1 > secondmax && [ !$1 -eq max ] ]; then
+        elif [[ $1 > secondmax && !$1 -eq max ]]; then
             secondmax=$1
         fi
         total=$((total+$1))
