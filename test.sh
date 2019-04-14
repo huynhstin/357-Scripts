@@ -5,7 +5,8 @@
 
 ASGN=${PWD##*/}
 TEST_DIRECTORY="//home/kmammen/357/$ASGN/"
-HOME="/home/jhuynh42/357/${ASGN::-1}s/$ASGN"
+
+HOME="/home/jhuynh42/357/${ASGN//[0-9]/}s/$ASGN" 
 fail=0
 input=0
 
