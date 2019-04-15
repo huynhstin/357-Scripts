@@ -18,18 +18,18 @@ function run_tests {
         if [ ! -f $test ]; then
             echo "-> No test.in's found. Running solution without them... "
             echo "-> Note that all test.in's should be located in /tests. "
-            $2 > $HOME/tests/no_in.$1
+            ~kmammen-grader/bin/SafeRun $2 > $HOME/tests/no_in.$1
             break
         fi 
 
         name=${test::-3}
         if [[ input -eq 1 ]]; then # is an input file 
-            $2 < $test &> $name.$1
+            ~kmammen-grader/bin/SafeRun $2 < $test &> $name.$1
         else # is command line args
             # remove old test output
             rm -f $name.$1
             while IFS="" read -r arg || [ -n "$arg" ]; do
-                $2 $arg &>> $name.$1
+                ~kmammen-grader/bin/SafeRun $2 $arg &>> $name.$1
             done <"$test"
         fi
     done
