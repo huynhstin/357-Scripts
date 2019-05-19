@@ -1,0 +1,20 @@
+#!/bin/bash
+# Global variables for the scripts.
+
+# Change these as needed.
+HOME_PATH="/home/jhuynh42/357"
+QTR="S19"
+SECT="Section9"
+
+ASGN="${PWD##*/}"
+MAMMEN_ASGN="//home/kmammen-grader/evaluations/$QTR/357/${PWD##*/}"
+SCRIPTS="$HOME_PATH/Scripts"
+OUT_NAME="tests/complexity.out"
+GLOBIGNORE="test*"
+DESC_LOC="tests/desc"
+FEATURE_ASGN="$MAMMEN_ASGN/tests/feature"
+TEST_DIRECTORY="//home/kmammen/357/$ASGN/"
+HOME="$HOME_PATH/${ASGN//[0-9]/}s/$ASGN" 
+
+STYLECHECK_OUT="$SCRIPTS/stylecheck"
+TEST_OUT="$SCRIPTS/test.sh"

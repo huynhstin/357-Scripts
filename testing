@@ -1,0 +1,19 @@
+#!/bin/bash
+
+for testInput in *.in; do
+   # Strip off the file extension, i.e., the ".in"
+   name=${testInput%.in}
+
+   # Run the test
+   ./a.out child < $testInput > $name.out
+   ./a.out ~kmammen/357/Exercise20/child < $testInput > $name.out2
+   ~kmammen/357/Exercise20/parent ~kmammen/357/Exercise20/child  < $testInput > $name.expect
+   # diff the results
+   diff -q $name.out $name.expect
+   diff -q $name.out2 $name.expect
+done
+
+#./a.out child < test3.special &> test3.actual
+#~kmammen/357/Exercise20/parent ~kmammen/357/Exercise20/child< test3.special &> test3.expected
+#diff test3.actual test3.expected
+

@@ -1,0 +1,68 @@
+#!/bin/bash
+# Gets the assignment info 
+# Usage:
+#   ./getasgn.sh 
+#   Run in the directory where you intend to copy the files.
+#   Directory's name must be formatted ExerciseN or ProjectN
+source `dirname $0`/vars
+                                                                                                                                                                                                                                                                                                                                         
+# Copy makefile and requirements description
+cp $MAMMEN_ASGN/Makefile .
+cp $MAMMEN_ASGN/requirements . 
+
+mkdir -p $DESC_LOC
+rm $DESC_LOC/*
+
+# $1: path to valgrind test
+# #2: name of text doc to copy to 
+function copy_valgrind {
+	# Copy valgrind info if it exists
+	if [ -f $1/valgrind ]; then
+		echo -e "Valgrind \c" >> $DESC_LOC/$2
+		cat $1/valgrind >> $DESC_LOC/$2
+		echo >> $DESC_LOC/$2
+	else # add a newline
+		echo >> $DESC_LOC/$2
+	fi 
+}
+
+i=1
+# Copy description and valgrind of each core test
+for test in $MAMMEN_ASGN/tests/core/test[[:digit:]]*; do
+	echo -n "$i. " >> $DESC_LOC/core.txt
+	i=$((i+1))
+	cat $test/description >> $DESC_LOC/core.txt
+	copy_valgrind "$test" "core.txt"
+done
+
+# Copy value of core tests
+echo -e "Value of core tests: \c" >> $DESC_LOC/core.txt
+cat $MAMMEN_ASGN/tests/core/value >> $DESC_LOC/core.txt 
+
+i=1
+# Copy description, value, and valgrind of each feature test
+while read test; do
+	echo -n "$i. " >> $DESC_LOC/feature.txt
+	i=$((i+1))
+	cat $FEATURE_ASGN/$test/description  >> $DESC_LOC/feature.txt
+
+	# Copy value
+  	echo -e "Value: \c" >> $DESC_LOC/feature.txt
+  	cat $FEATURE_ASGN/$test/value >> $DESC_LOC/feature.txt
+
+	copy_valgrind "$FEATURE_ASGN/$test" "feature.txt"
+done <$FEATURE_ASGN/testList
+
+# Copy CPU, memory tests if they exist 
+function copy_cpu_mem_tests {
+	if [ -d $MAMMEN_ASGN/$1 ]; then
+		for test in $MAMMEN_ASGN/$1/test[[:digit:]]*; do
+			cat $test/description  >> $DESC_LOC/$1.txt
+			echo -e "Value of $1 tests: \c" >> $DESC_LOC/$1.txt
+			cat $test/value >> $DESC_LOC/$1.txt
+		done
+	fi
+}
+
+copy_cpu_mem_tests "cpu"
+copy_cpu_mem_tests "heap"

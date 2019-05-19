@@ -2,8 +2,11 @@
 # Run tests for an assignment in 357
 # Run ./test.sh inside a folder with the name of the assignment: ex /Exercise5/
 # Run with -v for full diff output
-source `dirname $0`/vars
 
+ASGN=${PWD##*/}
+TEST_DIRECTORY="//home/kmammen/357/$ASGN/"
+
+HOME="/home/jhuynh42/357/${ASGN//[0-9]/}s/$ASGN" 
 fail=0
 input=0
 
@@ -76,3 +79,4 @@ if [[ fail -eq 0 ]]; then
 else 
     echo -e "At least one test failed."
 fi
+

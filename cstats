@@ -1,0 +1,48 @@
+#!/bin/bash
+source `dirname $0`/vars
+complexity -t0 -s1 *.c > $OUT_NAME
+cat $OUT_NAME
+
+total=0
+max=0
+curn=0
+ratio=0
+seen=0
+
+n=$(($(cat $OUT_NAME | wc -l) - 3)) # number of funcs
+qrt="$(bc <<<"scale=3; ($n / 4)")" # upper quartile 
+dec="$(bc <<<"scale=0; ($qrt % 1)")"  # decimal portion of quartile
+nth_func="$(echo "a=$n; b=4; if ( a%b ) a - (a/b+1) else a - (a/b)" | bc)" 
+
+while read -r line; do
+    set -- $line
+    if [[ $1 =~ ^[0-9]+$ ]]; then # only get digits   
+        if [ $1 -gt $max ]; then 
+            max=$1
+        fi
+        total=$((total+$1))
+        curn=$((curn + 1))
+        if [[ $curn -gt $nth_func ]]; then
+            if [[ $seen -eq 0 ]]; then
+                seen=1
+                temp="$(bc <<<"scale=1; ($1 * $dec )")"
+                ratio="$(bc <<<"scale=1; ($ratio + $temp)")"
+            else
+                ratio="$(bc <<<"scale=1; ($ratio + $1)")"
+            fi
+        fi
+    fi
+done < $OUT_NAME
+
+# Calculate average to 1 decimal place
+avg="$(bc <<<"scale=1; $total / $n")"
+
+# Calculate ratio
+ratio="$(bc <<<"scale=3; $ratio / $total")"
+
+echo
+echo "Total functions: $n"
+echo "Total complexity: $total"
+echo "Max complexity: $max"
+echo "Average complexity: $avg"
+echo "Ratio: 0$ratio"

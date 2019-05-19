@@ -1,0 +1,24 @@
+#!/bin/bash
+source `dirname $0`/vars
+
+# Zip all .c and .h files in a directory into a file named DIRECTORY.zip
+find . | egrep "\.(c|h)$" | zip -@ $ASGN.zip 
+echo 
+
+# Echo contents of zip file 
+unzip -l $ASGN.zip
+echo 
+
+# Prompt for handin
+read -p "Handin? " -n 1 -r
+echo 
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if [[ $ASGN == "Exercise"* ]]; then 
+        handin kmammen-grader $ASGN-$SECT $ASGN.zip 
+        handin kmammen-grader $ASGN-$SECT
+    else
+        handin kmammen-grader $ASGN $ASGN.zip 
+        handin kmammen-grader $ASGN
+    fi
+fi
+echo "Done."

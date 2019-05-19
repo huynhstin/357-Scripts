@@ -1,0 +1,38 @@
+#!/bin/bash
+# Submits assignment for 357. 
+# Run ./submit.sh inside a folder with the name of the assignment: ex /Exercise5/
+source `dirname $0`/vars
+
+mkdir -p tests
+
+# Run stylecheck and exit if failed
+echo -e "$STYLECHECK_OUT"
+echo 
+if [[ $STYLECHECK_OUT == *"FAILED style check"* ]]; then 
+    echo "Aborting."
+    exit 1
+fi
+
+# Get makefile and requirements if not already there
+$SCRIPTS/getasgn
+
+# Ensure requirements fulfilled
+echo "Make sure that your code follows the requirements:"
+cat requirements
+echo
+
+# Check complexity
+echo "Make sure that your code is within the complexity metrics: "
+$SCRIPTS/cstats
+echo
+
+# Run tests and exit if failed
+
+echo -e "$TEST_OUT\n"
+if [[ $TEST_OUT == *"test failed"* ]]; then 
+    echo "Aborting."
+    exit 1
+fi
+
+# Handin
+$SCRIPTS/handy

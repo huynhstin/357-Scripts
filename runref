@@ -1,0 +1,4 @@
+#!/bin/bash
+# Note that this script may not work if there are multiple executable files
+#  in the directory. In that case, you'll have to run the reference manually.
+exec $(find //home/kmammen/357/${PWD##*/} -type f -executable) $@
